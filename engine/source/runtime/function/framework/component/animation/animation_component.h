@@ -32,12 +32,12 @@ namespace Pilot
 
     protected:
         META(Enable)
-        AnimationComponentRes m_animation_res;
+        AnimationComponentRes m_animation_res;      // 动画资源
 
-        Skeleton m_skeleton;
-        AnimationResult       m_animation_result;
-        AnimationFSM          m_animation_fsm;
-        json11::Json::object  m_signal;
-        float                 m_ratio {0};
+        Skeleton m_skeleton;                        // 运行时骨架实例
+        AnimationResult       m_animation_result;   // 每帧的骨骼矩阵结果
+        AnimationFSM          m_animation_fsm;      // 动画状态机
+        json11::Json::object  m_signal;             // 输入信号表
+        float                 m_ratio {0};          // 动画播放进度 0 - 1
     };
 } // namespace Pilot

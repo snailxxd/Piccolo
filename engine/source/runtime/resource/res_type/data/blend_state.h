@@ -72,13 +72,13 @@ namespace Pilot
         REFLECTION_BODY(BlendState);
 
     public:
-        int                      m_clip_count;
-        std::vector<std::string> m_blend_clip_file_path;
-        std::vector<float>       m_blend_clip_file_length;
-        std::vector<std::string> m_blend_anim_skel_map_path;
-        std::vector<float>       m_blend_weight;
-        std::vector<std::string> m_blend_mask_file_path;
-        std::vector<float>       m_blend_ratio;
+        int                      m_clip_count;                  // 子动画数量
+        std::vector<std::string> m_blend_clip_file_path;        // 子动画文件路径
+        std::vector<float>       m_blend_clip_file_length;      // 子动画文件长度
+        std::vector<std::string> m_blend_anim_skel_map_path;    // 动画骨骼映射文件路径
+        std::vector<float>       m_blend_weight;                // 动画混合权重
+        std::vector<std::string> m_blend_mask_file_path;        // mask 文件路径
+        std::vector<float>       m_blend_ratio;                 // 每个子动画的播放进度
         virtual ~BlendState() override {}
         virtual float getLength() const override
         {

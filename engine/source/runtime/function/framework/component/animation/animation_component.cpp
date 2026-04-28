@@ -73,6 +73,7 @@ namespace Pilot
         }
         blend(desired_ratio, blend_state);
     }
+
     void AnimationComponent::tick(float delta_time)
     {
         if ((m_tick_in_editor_mode == false) && g_is_editor_mode)
@@ -149,6 +150,7 @@ namespace Pilot
         m_skeleton.applyPose(pose);
         m_animation_result = m_skeleton.outputAnimationResult();
     }
+
     void AnimationComponent::blend(float desired_ratio, BlendState* blend_state)
     {
 
