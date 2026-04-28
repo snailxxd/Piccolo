@@ -33,6 +33,9 @@ AnimationPose::AnimationPose(const AnimationClip&   clip,
     extractFromClip(m_bone_poses, clip, ratio);
 }
 
+/*
+辅助函数，从 clip 中按 ratio 抽取两帧进行插值，得到骨骼变换
+*/
 void AnimationPose::extractFromClip(std::vector<Transform>& bones, const AnimationClip& clip, float ratio)
 {
     bones.resize(clip.node_count);
@@ -61,14 +64,17 @@ void AnimationPose::blend(const AnimationPose& pose)
         auto&       bone_trans_one = m_bone_poses[i];
         const auto& bone_trans_two = pose.m_bone_poses[i];
 
-        // float sum_weight =
-        // if (sum_weight != 0)
+        float sum_weight = m_weight.m_blend_weight[i] + pose.m_weight.m_blend_weight[i];
+        if (sum_weight != 0)
         {
-            // float cur_weight =
-            // m_weight.m_blend_weight[i] =
-            // bone_trans_one.m_position  =
-            // bone_trans_one.m_scale     =
-            // bone_trans_one.m_rotation  =
+            float cur_weight = 1 - m_weight.m_blend_weight[i] / sum_weight;
+            m_weight.m_blend_weight[i] = sum_weight;
+            bone_trans_one.m_position  = Vector3::lerp(
+                bone_trans_one.m_position, bone_trans_two.m_position, cur_weight);
+            bone_trans_one.m_scale     = Vector3::lerp(
+                bone_trans_one.m_scale, bone_trans_two.m_scale, cur_weight);
+            bone_trans_one.m_rotation  = Quaternion::nLerp(
+                cur_weight, bone_trans_one.m_rotation, bone_trans_two.m_rotation, true);
         }
     }
 }

@@ -173,9 +173,9 @@ namespace Pilot
         }
         for (int i = 1; i < blendStateData.m_clip_count; i++)
         {
-            for (auto& pose : poses[i].m_weight.m_blend_weight)
+            for (auto& bone_weight : poses[i].m_weight.m_blend_weight)
             {
-                pose = blend_state->m_blend_weight[i];
+                bone_weight = blend_state->m_blend_weight[i];
             }
             poses[0].blend(poses[i]);
         }
