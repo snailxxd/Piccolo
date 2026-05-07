@@ -8,7 +8,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace Pilot
+namespace Piccolo
 {
     class RHI;
     class RenderScene;
@@ -18,6 +18,8 @@ namespace Pilot
     {
     public:
         virtual ~RenderResourceBase() {}
+
+        virtual void clear() = 0;
 
         virtual void uploadGlobalRenderResource(std::shared_ptr<RHI> rhi, LevelResourceDesc level_resource_desc) = 0;
 
@@ -49,4 +51,4 @@ namespace Pilot
 
         std::unordered_map<MeshSourceDesc, AxisAlignedBox> m_bounding_box_cache_map;
     };
-} // namespace Pilot
+} // namespace Piccolo

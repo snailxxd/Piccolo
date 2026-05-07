@@ -2,7 +2,7 @@
 
 #include "runtime/core/math/math.h"
 
-namespace Pilot
+namespace Piccolo
 {
     enum class GameCommand : unsigned int
     {
@@ -14,12 +14,13 @@ namespace Pilot
         squat    = 1 << 5,                 // not implemented yet
         sprint   = 1 << 6,                 // LEFT SHIFT
         fire     = 1 << 7,                 // not implemented yet
+        free_carema = 1 << 8,              // F
         invalid  = (unsigned int)(1 << 31) // lost focus
     };
 
     extern unsigned int k_complement_control_command;
 
-    class InputSystem 
+    class InputSystem
     {
 
     public:
@@ -36,7 +37,7 @@ namespace Pilot
         Radian m_cursor_delta_yaw {0};
         Radian m_cursor_delta_pitch {0};
 
-        void resetGameCommand() { m_game_command = 0; }
+        void         resetGameCommand() { m_game_command = 0; }
         unsigned int getGameCommand() const { return m_game_command; }
 
     private:
@@ -49,4 +50,4 @@ namespace Pilot
         int m_last_cursor_x {0};
         int m_last_cursor_y {0};
     };
-} // namespace Pilot
+} // namespace Piccolo

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "runtime/core/math/axis_aligned.h"
+
 #include "runtime/function/physics/physics_config.h"
 
 namespace JPH
@@ -13,20 +15,20 @@ namespace JPH
 #endif
 } // namespace JPH
 
-namespace Pilot
+namespace Piccolo
 {
     class Transform;
     class RigidBodyComponentRes;
     class RigidBodyShape;
 
-    static constexpr uint32_t k_invalid_rigidbody_id = 0xffffffff;
+    static constexpr uint32_t s_invalid_rigidbody_id = 0xffffffff;
 
     struct PhysicsHitInfo
     {
         Vector3  hit_position;
         Vector3  hit_normal;
         float    hit_distance {0.f};
-        uint32_t body_id {k_invalid_rigidbody_id};
+        uint32_t body_id {s_invalid_rigidbody_id};
     };
 
     class PhysicsScene
@@ -82,6 +84,8 @@ namespace Pilot
         /// @return: true if overlapped with any rigidbodies
         bool isOverlap(const RigidBodyShape& shape, const Matrix4x4& global_transform);
 
+        void getShapeBoundingBoxes(uint32_t body_id, std::vector<AxisAlignedBox>& out_bounding_boxes) const;
+
 #ifdef ENABLE_PHYSICS_DEBUG_RENDERER
         void drawPhysicsScene(JPH::DebugRenderer* debug_renderer);
 #endif
@@ -94,4 +98,4 @@ namespace Pilot
 
         std::vector<uint32_t> m_pending_remove_bodies;
     };
-} // namespace Pilot
+} // namespace Piccolo

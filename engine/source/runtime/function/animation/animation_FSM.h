@@ -2,7 +2,7 @@
 #include <functional>
 #include <json11.hpp>
 #include <vector>
-namespace Pilot
+namespace Piccolo
 {
     class AnimationFSM
     {
@@ -29,4 +29,4 @@ namespace Pilot
         bool        update(const json11::Json::object& signals);
         std::string getCurrentClipBaseName() const;
     };
-} // namespace Pilot
+} // namespace Piccolo

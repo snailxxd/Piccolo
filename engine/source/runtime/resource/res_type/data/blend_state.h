@@ -4,7 +4,7 @@
 #include "runtime/resource/res_type/data/animation_skeleton_node_map.h"
 #include <string>
 #include <vector>
-namespace Pilot
+namespace Piccolo
 {
 
     REFLECTION_TYPE(BoneBlendWeight)
@@ -107,4 +107,4 @@ namespace Pilot
         virtual ~BlendSpace1D()override {}
     };
 
-} // namespace Pilot
+} // namespace Piccolo

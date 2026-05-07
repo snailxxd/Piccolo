@@ -6,39 +6,39 @@
 #include "runtime/function/framework/world/world_manager.h"
 #include "runtime/function/global/global_context.h"
 #include "runtime/function/input/input_system.h"
+#include "runtime/function/particle/particle_manager.h"
 #include "runtime/function/physics/physics_manager.h"
 #include "runtime/function/render/render_system.h"
 #include "runtime/function/render/window_system.h"
+#include "runtime/function/render/debugdraw/debug_draw_manager.h"
 
-namespace Pilot
+namespace Piccolo
 {
     bool                            g_is_editor_mode {false};
     std::unordered_set<std::string> g_editor_tick_component_types {};
 
-    void PilotEngine::startEngine(const EngineInitParams& param)
+    void PiccoloEngine::startEngine(const std::string& config_file_path)
     {
-        m_init_params = param;
+        Reflection::TypeMetaRegister::metaRegister();
 
-        Reflection::TypeMetaRegister::Register();
-
-        g_runtime_global_context.startSystems(param);
+        g_runtime_global_context.startSystems(config_file_path);
 
         LOG_INFO("engine start");
     }
 
-    void PilotEngine::shutdownEngine()
+    void PiccoloEngine::shutdownEngine()
     {
         LOG_INFO("engine shutdown");
 
         g_runtime_global_context.shutdownSystems();
 
-        Reflection::TypeMetaRegister::Unregister();
+        Reflection::TypeMetaRegister::metaUnregister();
     }
 
-    void PilotEngine::initialize() {}
-    void PilotEngine::clear() {}
+    void PiccoloEngine::initialize() {}
+    void PiccoloEngine::clear() {}
 
-    void PilotEngine::run()
+    void PiccoloEngine::run()
     {
         std::shared_ptr<WindowSystem> window_system = g_runtime_global_context.m_window_system;
         ASSERT(window_system);
@@ -50,7 +50,7 @@ namespace Pilot
         }
     }
 
-    float PilotEngine::calculateDeltaTime()
+    float PiccoloEngine::calculateDeltaTime()
     {
         float delta_time;
         {
@@ -65,7 +65,7 @@ namespace Pilot
         return delta_time;
     }
 
-    bool PilotEngine::tickOneFrame(float delta_time)
+    bool PiccoloEngine::tickOneFrame(float delta_time)
     {
         logicalTick(delta_time);
         calculateFPS(delta_time);
@@ -74,7 +74,7 @@ namespace Pilot
         // exchange data between logic and render contexts
         g_runtime_global_context.m_render_system->swapLogicRenderData();
 
-        rendererTick();
+        rendererTick(delta_time);
 
 #ifdef ENABLE_PHYSICS_DEBUG_RENDERER
         g_runtime_global_context.m_physics_manager->renderPhysicsWorld(delta_time);
@@ -83,27 +83,27 @@ namespace Pilot
         g_runtime_global_context.m_window_system->pollEvents();
 
 
-        g_runtime_global_context.m_window_system->setTile(
-            std::string("Pilot - " + std::to_string(getFPS()) + " FPS").c_str());
+        g_runtime_global_context.m_window_system->setTitle(
+            std::string("Piccolo - " + std::to_string(getFPS()) + " FPS").c_str());
 
         const bool should_window_close = g_runtime_global_context.m_window_system->shouldClose();
         return !should_window_close;
     }
 
-    void PilotEngine::logicalTick(float delta_time)
+    void PiccoloEngine::logicalTick(float delta_time)
     {
         g_runtime_global_context.m_world_manager->tick(delta_time);
         g_runtime_global_context.m_input_system->tick();
     }
 
-    bool PilotEngine::rendererTick()
+    bool PiccoloEngine::rendererTick(float delta_time)
     {
-        g_runtime_global_context.m_render_system->tick();
+        g_runtime_global_context.m_render_system->tick(delta_time);
         return true;
     }
 
-    const float PilotEngine::k_fps_alpha = 1.f / 100;
-    void        PilotEngine::calculateFPS(float delta_time)
+    const float PiccoloEngine::s_fps_alpha = 1.f / 100;
+    void        PiccoloEngine::calculateFPS(float delta_time)
     {
         m_frame_count++;
 
@@ -113,9 +113,9 @@ namespace Pilot
         }
         else
         {
-            m_average_duration = m_average_duration * (1 - k_fps_alpha) + delta_time * k_fps_alpha;
+            m_average_duration = m_average_duration * (1 - s_fps_alpha) + delta_time * s_fps_alpha;
         }
 
         m_fps = static_cast<int>(1.f / m_average_duration);
     }
-} // namespace Pilot
+} // namespace Piccolo

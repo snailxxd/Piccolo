@@ -5,9 +5,10 @@
 #include <filesystem>
 #include <string>
 
-namespace Pilot
+namespace Piccolo
 {
     class Level;
+    class LevelDebugger;
     class PhysicsScene;
 
     /// Manage all game worlds, it should be support multiple worlds, including game world and editor world.
@@ -40,5 +41,8 @@ namespace Pilot
         std::unordered_map<std::string, std::shared_ptr<Level>> m_loaded_levels;
         // active level, currently we just support one active level
         std::weak_ptr<Level> m_current_active_level;
+
+        //debug level
+        std::shared_ptr<LevelDebugger> m_level_debugger;
     };
-} // namespace Pilot
+} // namespace Piccolo

@@ -6,7 +6,7 @@
 #include <string>
 #include <unordered_map>
 
-namespace Pilot
+namespace Piccolo
 {
     class Character;
     class GObject;
@@ -19,7 +19,7 @@ namespace Pilot
     class Level
     {
     public:
-        virtual ~Level();
+        virtual ~Level(){};
 
         bool load(const std::string& level_res_url);
         void unload();
@@ -53,4 +53,4 @@ namespace Pilot
 
         std::weak_ptr<PhysicsScene> m_physics_scene;
     };
-} // namespace Pilot
+} // namespace Piccolo

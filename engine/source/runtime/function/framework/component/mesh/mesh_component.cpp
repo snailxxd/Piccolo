@@ -11,7 +11,7 @@
 #include "runtime/function/render/render_swap_context.h"
 #include "runtime/function/render/render_system.h"
 
-namespace Pilot
+namespace Piccolo
 {
     void MeshComponent::postLoadResource(std::weak_ptr<GObject> parent_object)
     {
@@ -74,7 +74,7 @@ namespace Pilot
             {
                 for (auto& node : animation_component->getResult().m_node)
                 {
-                    Pilot::SkeletonAnimationResultTransform tmp {Matrix4x4(node.m_transform)};
+                    Piccolo::SkeletonAnimationResultTransform tmp {Matrix4x4(node.m_transform)};
                     animation_result.m_transforms.push_back(tmp);
                 }
             }
@@ -103,4 +103,4 @@ namespace Pilot
             transform_component->setDirtyFlag(false);
         }
     }
-} // namespace Pilot
+} // namespace Piccolo

@@ -5,7 +5,7 @@
 #include "runtime/function/controller/character_controller.h"
 #include "runtime/function/framework/component/component.h"
 
-namespace Pilot
+namespace Piccolo
 {
     enum class MotorState : unsigned char
     {
@@ -21,7 +21,7 @@ namespace Pilot
     };
 
     REFLECTION_TYPE(MotorComponent)
-    CLASS(MotorComponent : public Component, WhiteListFields)
+    CLASS(MotorComponent : public Component, WhiteListFields,WhiteListMethods)
     {
         REFLECTION_BODY(MotorComponent)
     public:
@@ -38,6 +38,9 @@ namespace Pilot
 
         float getSpeedRatio() const { return m_move_speed_ratio; }
         bool  getIsMoving() const { return m_is_moving; }
+
+        META(Enable)
+        void getOffStuckDead();
 
     private:
         void calculatedDesiredHorizontalMoveSpeed(unsigned int command, float delta_time);
@@ -64,6 +67,7 @@ namespace Pilot
         ControllerType m_controller_type {ControllerType::none};
         Controller*    m_controller {nullptr};
 
+        META(Enable)
         bool m_is_moving {false};
     };
-} // namespace Pilot
+} // namespace Piccolo

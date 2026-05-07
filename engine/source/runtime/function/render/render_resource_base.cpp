@@ -18,7 +18,7 @@
 #include <filesystem>
 #include <vector>
 
-namespace Pilot
+namespace Piccolo
 {
     std::shared_ptr<TextureData> RenderResourceBase::loadTextureHDR(std::string file, int desired_channels)
     {
@@ -39,10 +39,10 @@ namespace Pilot
         switch (desired_channels)
         {
             case 2:
-                texture->m_format = PILOT_PIXEL_FORMAT::PILOT_PIXEL_FORMAT_R32G32_FLOAT;
+                texture->m_format = RHIFormat::RHI_FORMAT_R32G32_SFLOAT;
                 break;
             case 4:
-                texture->m_format = PILOT_PIXEL_FORMAT::PILOT_PIXEL_FORMAT_R32G32B32A32_FLOAT;
+                texture->m_format = RHIFormat::RHI_FORMAT_R32G32B32A32_SFLOAT;
                 break;
             default:
                 // three component format is not supported in some vulkan driver implementations
@@ -52,7 +52,7 @@ namespace Pilot
         texture->m_depth        = 1;
         texture->m_array_layers = 1;
         texture->m_mip_levels   = 1;
-        texture->m_type         = PILOT_IMAGE_TYPE::PILOT_IMAGE_TYPE_2D;
+        texture->m_type         = PICCOLO_IMAGE_TYPE::PICCOLO_IMAGE_TYPE_2D;
 
         return texture;
     }
@@ -72,12 +72,12 @@ namespace Pilot
 
         texture->m_width        = iw;
         texture->m_height       = ih;
-        texture->m_format       = (is_srgb) ? PILOT_PIXEL_FORMAT::PILOT_PIXEL_FORMAT_R8G8B8A8_SRGB :
-                                              PILOT_PIXEL_FORMAT::PILOT_PIXEL_FORMAT_R8G8B8A8_UNORM;
+        texture->m_format       = (is_srgb) ? RHIFormat::RHI_FORMAT_R8G8B8A8_SRGB :
+                                              RHIFormat::RHI_FORMAT_R8G8B8A8_UNORM;
         texture->m_depth        = 1;
         texture->m_array_layers = 1;
         texture->m_mip_levels   = 1;
-        texture->m_type         = PILOT_IMAGE_TYPE::PILOT_IMAGE_TYPE_2D;
+        texture->m_type         = PICCOLO_IMAGE_TYPE::PICCOLO_IMAGE_TYPE_2D;
 
         return texture;
     }
@@ -340,4 +340,4 @@ namespace Pilot
 
         return mesh_data;
     }
-} // namespace Pilot
+} // namespace Piccolo

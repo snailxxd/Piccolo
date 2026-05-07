@@ -2,14 +2,14 @@
 
 #include "runtime/function/render/render_pass.h"
 
-namespace Pilot
+namespace Piccolo
 {
     class WindowUI;
 
     struct FXAAPassInitInfo : RenderPassInitInfo
     {
-        VkRenderPass render_pass;
-        VkImageView  input_attachment;
+        RHIRenderPass* render_pass;
+        RHIImageView*  input_attachment;
     };
 
     class FXAAPass : public RenderPass
@@ -18,11 +18,11 @@ namespace Pilot
         void initialize(const RenderPassInitInfo* init_info) override final;
         void draw() override final;
 
-        void updateAfterFramebufferRecreate(VkImageView input_attachment);
+        void updateAfterFramebufferRecreate(RHIImageView* input_attachment);
 
     private:
         void setupDescriptorSetLayout();
         void setupPipelines();
         void setupDescriptorSet();
     };
-} // namespace Pilot
+} // namespace Piccolo

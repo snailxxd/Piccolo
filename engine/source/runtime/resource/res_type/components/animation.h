@@ -6,7 +6,7 @@
 #include <string>
 #include <vector>
 
-namespace Pilot
+namespace Piccolo
 {
 
     REFLECTION_TYPE(AnimationResultElement)
@@ -42,4 +42,4 @@ namespace Pilot
         // animation to skeleton map
     };
 
-} // namespace Pilot
+} // namespace Piccolo

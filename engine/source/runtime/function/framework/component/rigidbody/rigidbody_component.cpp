@@ -1,5 +1,7 @@
 #include "runtime/function/framework/component/rigidbody/rigidbody_component.h"
 
+#include "runtime/engine.h"
+
 #include "runtime/core/base/macro.h"
 
 #include "runtime/function/framework/component/transform/transform_component.h"
@@ -7,9 +9,8 @@
 #include "runtime/function/framework/world/world_manager.h"
 #include "runtime/function/global/global_context.h"
 #include "runtime/function/physics/physics_scene.h"
-#include "runtime/function/physics/physics_system.h"
 
-namespace Pilot
+namespace Piccolo
 {
     void RigidBodyComponent::postLoadResource(std::weak_ptr<GObject> parent_object)
     {
@@ -22,43 +23,65 @@ namespace Pilot
             return;
         }
 
-        m_physics_actor = g_runtime_global_context.m_legacy_physics_system->createPhysicsActor(
-            parent_object, parent_transform->getTransformConst(), m_rigidbody_res);
-
         std::shared_ptr<PhysicsScene> physics_scene =
             g_runtime_global_context.m_world_manager->getCurrentActivePhysicsScene().lock();
         ASSERT(physics_scene);
 
-        const uint32_t body_id = physics_scene->createRigidBody(parent_transform->getTransformConst(), m_rigidbody_res);
-        m_physics_actor->setBodyID(body_id);
+        m_rigidbody_id = physics_scene->createRigidBody(parent_transform->getTransformConst(), m_rigidbody_res);
     }
 
     RigidBodyComponent::~RigidBodyComponent()
     {
-        if (m_physics_actor)
-        {
-            const uint32_t body_id = m_physics_actor->getBodyID();
+        std::shared_ptr<PhysicsScene> physics_scene =
+            g_runtime_global_context.m_world_manager->getCurrentActivePhysicsScene().lock();
+        ASSERT(physics_scene);
 
+        physics_scene->removeRigidBody(m_rigidbody_id);
+    }
+
+    void RigidBodyComponent::createRigidBody(const Transform& global_transform)
+    {
+        std::shared_ptr<PhysicsScene> physics_scene =
+            g_runtime_global_context.m_world_manager->getCurrentActivePhysicsScene().lock();
+        ASSERT(physics_scene);
+
+        m_rigidbody_id = physics_scene->createRigidBody(global_transform, m_rigidbody_res);
+    }
+
+    void RigidBodyComponent::removeRigidBody()
+    {
+        std::shared_ptr<PhysicsScene> physics_scene =
+            g_runtime_global_context.m_world_manager->getCurrentActivePhysicsScene().lock();
+        ASSERT(physics_scene);
+
+        physics_scene->removeRigidBody(m_rigidbody_id);
+    }
+
+    void RigidBodyComponent::updateGlobalTransform(const Transform& transform, bool is_scale_dirty)
+    {
+        if (is_scale_dirty)
+        {
+            removeRigidBody();
+
+            createRigidBody(transform);
+        }
+        else
+        {
             std::shared_ptr<PhysicsScene> physics_scene =
                 g_runtime_global_context.m_world_manager->getCurrentActivePhysicsScene().lock();
             ASSERT(physics_scene);
 
-            physics_scene->removeRigidBody(body_id);
-
-            g_runtime_global_context.m_legacy_physics_system->removePhyicsActor(m_physics_actor);
-            m_physics_actor = nullptr;
+            physics_scene->updateRigidBodyGlobalTransform(m_rigidbody_id, transform);
         }
     }
 
-    void RigidBodyComponent::updateGlobalTransform(const Transform& transform)
+    void RigidBodyComponent::getShapeBoundingBoxes(std::vector<AxisAlignedBox>& out_bounding_boxes) const
     {
-        m_physics_actor->setGlobalTransform(transform);
+        std::shared_ptr<PhysicsScene> physics_scene =
+            g_runtime_global_context.m_world_manager->getCurrentActivePhysicsScene().lock();
+        ASSERT(physics_scene);
 
-        //std::shared_ptr<PhysicsScene> physics_scene =
-        //    g_runtime_global_context.m_world_manager->getCurrentActivePhysicsScene().lock();
-        //ASSERT(physics_scene);
-
-        //physics_scene->updateRigidBodyGlobalTransform(m_physics_actor->getBodyID(), transform);
+        physics_scene->getShapeBoundingBoxes(m_rigidbody_id, out_bounding_boxes);
     }
 
-} // namespace Pilot
+} // namespace Piccolo

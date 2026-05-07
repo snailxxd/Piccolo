@@ -8,15 +8,13 @@
 #include "runtime/engine.h"
 #include "runtime/function/character/character.h"
 #include "runtime/function/framework/object/object.h"
+#include "runtime/function/particle/particle_manager.h"
 #include "runtime/function/physics/physics_manager.h"
 #include "runtime/function/physics/physics_scene.h"
-
 #include <limits>
 
-namespace Pilot
+namespace Piccolo
 {
-    Level::~Level() { clear(); }
-
     void Level::clear()
     {
         m_current_active_character.reset();
@@ -69,6 +67,7 @@ namespace Pilot
 
         ASSERT(g_runtime_global_context.m_physics_manager);
         m_physics_scene = g_runtime_global_context.m_physics_manager->createPhysicsScene(level_res.m_gravity);
+        ParticleEmitterIDAllocator::reset();
 
         for (const ObjectInstanceRes& object_instance_res : level_res.m_objects)
         {
@@ -192,4 +191,4 @@ namespace Pilot
         m_gobjects.erase(go_id);
     }
 
-} // namespace Pilot
+} // namespace Piccolo

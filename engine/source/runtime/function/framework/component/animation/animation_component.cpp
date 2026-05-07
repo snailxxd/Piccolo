@@ -4,7 +4,7 @@
 #include "runtime/function/framework/object/object.h"
 #include <runtime/engine.h>
 
-namespace Pilot
+namespace Piccolo
 {
     void AnimationComponent::postLoadResource(std::weak_ptr<GObject> parent_object)
     {
@@ -135,6 +135,8 @@ namespace Pilot
 
     const AnimationResult& AnimationComponent::getResult() const { return m_animation_result; }
 
+    const Skeleton& AnimationComponent::getSkeleton() const { return m_skeleton; }
+
     void AnimationComponent::animateBasicClip(float desired_ratio, BasicClip* basic_clip)
     {
         auto                       clip_data = AnimationManager::getClipData(*basic_clip);
@@ -183,4 +185,4 @@ namespace Pilot
         m_skeleton.applyPose(poses[0]);
         m_animation_result = m_skeleton.outputAnimationResult();
     }
-} // namespace Pilot
+} // namespace Piccolo

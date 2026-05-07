@@ -11,7 +11,7 @@
 #include <optional>
 #include <vector>
 
-namespace Pilot
+namespace Piccolo
 {
     class RenderResource;
     class RenderCamera;
@@ -31,11 +31,13 @@ namespace Pilot
         std::optional<RenderEntity> m_render_axis;
 
         // visible objects (updated per frame)
-        std::vector<RenderMeshNode>              m_directional_light_visible_mesh_nodes;
-        std::vector<RenderMeshNode>              m_point_lights_visible_mesh_nodes;
-        std::vector<RenderMeshNode>              m_main_camera_visible_mesh_nodes;
-        std::vector<RenderParticleBillboardNode> m_main_camera_visible_particlebillboard_nodes;
-        RenderAxisNode                           m_axis_node;
+        std::vector<RenderMeshNode> m_directional_light_visible_mesh_nodes;
+        std::vector<RenderMeshNode> m_point_lights_visible_mesh_nodes;
+        std::vector<RenderMeshNode> m_main_camera_visible_mesh_nodes;
+        RenderAxisNode              m_axis_node;
+
+        // clear
+        void clear();
 
         // update visible objects in each frame
         void updateVisibleObjects(std::shared_ptr<RenderResource> render_resource,
@@ -69,4 +71,4 @@ namespace Pilot
         void updateVisibleObjectsAxis(std::shared_ptr<RenderResource> render_resource);
         void updateVisibleObjectsParticle(std::shared_ptr<RenderResource> render_resource);
     };
-} // namespace Pilot
+} // namespace Piccolo

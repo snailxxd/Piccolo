@@ -2,13 +2,13 @@
 
 #include "runtime/function/render/render_pass.h"
 
-namespace Pilot
+namespace Piccolo
 {
     class WindowUI;
 
     struct UIPassInitInfo : RenderPassInitInfo
     {
-        VkRenderPass render_pass;
+        RHIRenderPass* render_pass;
     };
 
     class UIPass : public RenderPass
@@ -24,4 +24,4 @@ namespace Pilot
     private:
         WindowUI* m_window_ui;
     };
-} // namespace Pilot
+} // namespace Piccolo

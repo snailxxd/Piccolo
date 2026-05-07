@@ -9,7 +9,7 @@
 #include <memory>
 #include <optional>
 
-namespace Pilot
+namespace Piccolo
 {
     class WindowSystem;
     class RHI;
@@ -18,10 +18,12 @@ namespace Pilot
     class RenderScene;
     class RenderCamera;
     class WindowUI;
+    class DebugDrawManager;
 
     struct RenderSystemInitInfo
     {
         std::shared_ptr<WindowSystem> window_system;
+        std::shared_ptr<DebugDrawManager> debugdraw_manager;
     };
 
     struct EngineContentViewport
@@ -39,11 +41,13 @@ namespace Pilot
         ~RenderSystem();
 
         void initialize(RenderSystemInitInfo init_info);
-        void tick();
+        void tick(float delta_time);
+        void clear();
 
         void                          swapLogicRenderData();
         RenderSwapContext&            getSwapContext();
         std::shared_ptr<RenderCamera> getRenderCamera() const;
+        std::shared_ptr<RHI>          getRHI() const;
 
         void      setRenderPipelineType(RENDER_PIPELINE_TYPE pipeline_type);
         void      initializeUIRenderBackend(WindowUI* window_ui);
@@ -74,4 +78,4 @@ namespace Pilot
 
         void processSwapData();
     };
-} // namespace Pilot
+} // namespace Piccolo

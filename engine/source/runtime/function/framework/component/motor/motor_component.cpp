@@ -14,7 +14,7 @@
 #include "runtime/function/input/input_system.h"
 #include "runtime/function/physics/physics_scene.h"
 
-namespace Pilot
+namespace Piccolo
 {
     void MotorComponent::postLoadResource(std::weak_ptr<GObject> parent_object)
     {
@@ -38,6 +38,7 @@ namespace Pilot
         m_target_position = transform_component->getPosition();
     }
 
+    void MotorComponent::getOffStuckDead() { LOG_INFO("Some get off stuck dead logic"); }
     MotorComponent::~MotorComponent()
     {
         if (m_controller_type == ControllerType::physics)
@@ -57,7 +58,7 @@ namespace Pilot
         if (!m_parent_object.lock())
             return;
 
-        std::shared_ptr<Level>     current_level     = g_runtime_global_context.m_world_manager->getCurrentActiveLevel().lock();
+        std::shared_ptr<Level> current_level = g_runtime_global_context.m_world_manager->getCurrentActiveLevel().lock();
         std::shared_ptr<Character> current_character = current_level->getCurrentActiveCharacter().lock();
         if (current_character == nullptr)
             return;
@@ -97,6 +98,7 @@ namespace Pilot
         bool has_move_command = ((unsigned int)GameCommand::forward | (unsigned int)GameCommand::backward |
                                  (unsigned int)GameCommand::left | (unsigned int)GameCommand::right) &
                                 command;
+        has_move_command &= ((unsigned int)GameCommand::free_carema & command) == 0;
         bool has_sprint_command = (unsigned int)GameCommand::sprint & command;
 
         bool  is_acceleration    = false;
@@ -236,4 +238,4 @@ namespace Pilot
         m_target_position = final_position;
     }
 
-} // namespace Pilot
+} // namespace Piccolo

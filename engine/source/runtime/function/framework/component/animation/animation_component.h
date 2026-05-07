@@ -6,7 +6,8 @@
 #include "runtime/resource/res_type/components/animation.h"
 #include "runtime/function/animation/animation_FSM.h"
 #include "json11.hpp"
-namespace Pilot
+
+namespace Piccolo
 {
     REFLECTION_TYPE(AnimationComponent)
     CLASS(AnimationComponent : public Component, WhiteListFields)
@@ -30,6 +31,8 @@ namespace Pilot
             m_signal[key] = value;
         }
 
+        const Skeleton& getSkeleton() const;
+
     protected:
         META(Enable)
         AnimationComponentRes m_animation_res;      // 动画资源
@@ -40,4 +43,4 @@ namespace Pilot
         json11::Json::object  m_signal;             // 输入信号表
         float                 m_ratio {0};          // 动画播放进度 0 - 1
     };
-} // namespace Pilot
+} // namespace Piccolo

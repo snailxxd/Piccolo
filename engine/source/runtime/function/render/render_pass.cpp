@@ -3,15 +3,14 @@
 #include "runtime/core/base/macro.h"
 
 #include "runtime/function/render/render_resource.h"
-#include "runtime/function/render/rhi/vulkan/vulkan_rhi.h"
+#include "runtime/function/render/interface/vulkan/vulkan_rhi.h"
 
-Pilot::VisiableNodes Pilot::RenderPass::m_visiable_nodes;
+Piccolo::VisiableNodes Piccolo::RenderPass::m_visiable_nodes;
 
-namespace Pilot
+namespace Piccolo
 {
     void RenderPass::initialize(const RenderPassInitInfo* init_info)
     {
-        m_vulkan_rhi = std::static_pointer_cast<VulkanRHI>(m_rhi);
         m_global_render_resource =
             &(std::static_pointer_cast<RenderResource>(m_render_resource)->m_global_render_resource);
     }
@@ -19,11 +18,11 @@ namespace Pilot
 
     void RenderPass::postInitialize() {}
 
-    VkRenderPass RenderPass::getRenderPass() const { return m_framebuffer.render_pass; }
+    RHIRenderPass* RenderPass::getRenderPass() const { return m_framebuffer.render_pass; }
 
-    std::vector<VkImageView> RenderPass::getFramebufferImageViews() const
+    std::vector<RHIImageView*> RenderPass::getFramebufferImageViews() const
     {
-        std::vector<VkImageView> image_views;
+        std::vector<RHIImageView*> image_views;
         for (auto& attach : m_framebuffer.attachments)
         {
             image_views.push_back(attach.view);
@@ -31,13 +30,13 @@ namespace Pilot
         return image_views;
     }
 
-    std::vector<VkDescriptorSetLayout> RenderPass::getDescriptorSetLayouts() const
+    std::vector<RHIDescriptorSetLayout*> RenderPass::getDescriptorSetLayouts() const
     {
-        std::vector<VkDescriptorSetLayout> layouts;
+        std::vector<RHIDescriptorSetLayout*> layouts;
         for (auto& desc : m_descriptor_infos)
         {
             layouts.push_back(desc.layout);
         }
         return layouts;
     }
-} // namespace Pilot
+} // namespace Piccolo

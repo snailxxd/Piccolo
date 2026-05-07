@@ -15,7 +15,7 @@ namespace JPH
 }
 #endif
 
-namespace Pilot
+namespace Piccolo
 {
     class PhysicsScene;
 
@@ -32,7 +32,6 @@ namespace Pilot
         void renderPhysicsWorld(float delta_time);
 #endif
 
-
     protected:
         std::vector<std::shared_ptr<PhysicsScene>> m_scenes;
 
@@ -42,6 +41,5 @@ namespace Pilot
 
         JPH::DebugRenderer* m_debug_renderer {nullptr};
 #endif
-
     };
-} // namespace Pilot
+} // namespace Piccolo

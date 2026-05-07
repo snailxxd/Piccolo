@@ -7,12 +7,12 @@
 #include "runtime/function/global/global_context.h"
 #include "runtime/function/physics/physics_scene.h"
 
-namespace Pilot
+namespace Piccolo
 {
     CharacterController::CharacterController(const Capsule& capsule) : m_capsule(capsule)
     {
         m_rigidbody_shape                                    = RigidBodyShape();
-        m_rigidbody_shape.m_geometry                         = PILOT_REFLECTION_NEW(Capsule);
+        m_rigidbody_shape.m_geometry                         = PICCOLO_REFLECTION_NEW(Capsule);
         *static_cast<Capsule*>(m_rigidbody_shape.m_geometry) = m_capsule;
 
         m_rigidbody_shape.m_type = RigidBodyShapeType::capsule;
@@ -21,10 +21,7 @@ namespace Pilot
         orientation.fromAngleAxis(Radian(Degree(90.f)), Vector3::UNIT_X);
 
         m_rigidbody_shape.m_local_transform =
-            Transform(
-                Vector3(0, 0, capsule.m_half_height + capsule.m_radius),
-                orientation,
-                Vector3::UNIT_SCALE);
+            Transform(Vector3(0, 0, capsule.m_half_height + capsule.m_radius), orientation, Vector3::UNIT_SCALE);
     }
 
     Vector3 CharacterController::move(const Vector3& current_position, const Vector3& displacement)
@@ -104,4 +101,4 @@ namespace Pilot
         return final_position;
     }
 
-} // namespace Pilot
+} // namespace Piccolo
